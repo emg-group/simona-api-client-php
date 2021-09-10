@@ -1,2 +1,3 @@
-# simona-api-client-php
-PHP implementation of the SIMONA IT Tool's API
+# SIMONA API client PHP
+
+PHP implementation of the SIMONA IT Tool's public API
