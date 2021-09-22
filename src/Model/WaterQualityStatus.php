@@ -36,7 +36,7 @@ class WaterQualityStatus
     public string $risk;
 
     /**
-     * @var array Geographic location of the monitoring site in WGS84 coordinates
+     * @var LngLat Geographic location of the monitoring site in WGS84 coordinates
      */
-    public array $coordinates;
+    public LngLat $coordinates;
 }

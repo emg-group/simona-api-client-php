@@ -2,8 +2,6 @@
 
 namespace EmgSystems\Simona\Model;
 
-use DateTime;
-
 /**
  * Class MonitoringSite
  *
@@ -17,7 +15,7 @@ class MonitoringSite
     /**
      * @var int
      */
-    public $monitoringSiteId;
+    public int $monitoringSiteId;
 
     /**
      * Operational activity period - begin
@@ -26,10 +24,10 @@ class MonitoringSite
      *
      * http://dd.eionet.europa.eu/datasets/latest/WISE_SpatialData/tables/MonitoringSite/elements/operationalActivityPeriodBegin
      *
-     * @var DateTime
+     * @var \DateTime|null
      * @wiseId operationalActivityPeriodBegin
      */
-    public $opActBegin;
+    public ?\DateTime $opActBegin;
 
     /**
      * Operational activity period - end
@@ -39,10 +37,10 @@ class MonitoringSite
      *
      * http://dd.eionet.europa.eu/datasets/latest/WISE_SpatialData/tables/MonitoringSite/elements/operationalActivityPeriodEnd
      *
-     * @var DateTime
+     * @var \DateTime|null
      * @wiseId operationalActivityPeriodEnd
      */
-    public $opActEnd;
+    public ?\DateTime $opActEnd;
 
     /**
      * Related to - identifier
@@ -64,7 +62,7 @@ class MonitoringSite
      * @var string
      * @wiseId relatedToIdentifier
      */
-    public $rSiteId;
+    public string $rSiteId;
 
     /**
      * Related to - identifier scheme
@@ -78,7 +76,7 @@ class MonitoringSite
      * @var string
      * @wiseId relatedToIdentifierScheme
      */
-    public $rSiteIdSch;
+    public string $rSiteIdSch;
 
     /**
      * Feature of interest - identifier
@@ -96,7 +94,7 @@ class MonitoringSite
      * @var string
      * @wiseId featureOfInterestIdentifier
      */
-    public $foiId;
+    public string $foiId;
 
     /**
      * Feature of interest - identifier scheme
@@ -121,7 +119,7 @@ class MonitoringSite
      * @var string
      * @wiseId featureOfInterestIdentifierScheme
      */
-    public $foiIdSch;
+    public string $foiIdSch;
 
     /**
      * Media monitored - biota
@@ -134,7 +132,7 @@ class MonitoringSite
      * @var bool
      * @wiseId mediaMonitoredBiota
      */
-    public $mediaBiota;
+    public bool $mediaBiota;
 
     /**
      * Media monitored - water
@@ -147,7 +145,7 @@ class MonitoringSite
      * @var bool
      * @wiseId mediaMonitoredWater
      */
-    public $mediaWater;
+    public bool $mediaWater;
 
     /**
      * Media monitored - sediment
@@ -160,7 +158,7 @@ class MonitoringSite
      * @var bool
      * @wiseId mediaMonitoredSediment
      */
-    public $mediaSedim;
+    public bool $mediaSedim;
 
     /**
      * Monitoring purpose
@@ -204,7 +202,7 @@ class MonitoringSite
      * @preprocessor explode
      * @wiseId       purpose
      */
-    public $purpose;
+    public array $purpose;
 
     /**
      * Catchment area
@@ -214,10 +212,10 @@ class MonitoringSite
      *
      * http://dd.eionet.europa.eu/datasets/latest/WISE_SpatialData/tables/MonitoringSite/elements/catchmentArea
      *
-     * @var float
+     * @var float|null
      * @wiseId catchmentArea
      */
-    public $catchArea;
+    public ?float $catchArea;
 
     /**
      * Maximum sampling depth
@@ -228,10 +226,10 @@ class MonitoringSite
      *
      * http://dd.eionet.europa.eu/datasets/latest/WISE_SpatialData/tables/MonitoringSite/elements/maximumDepth
      *
-     * @var float
+     * @var float|null
      * @wiseId maximumDepth
      */
-    public $maxDepth;
+    public ?float $maxDepth;
 
     /**
      * Confidentiality status
@@ -250,7 +248,7 @@ class MonitoringSite
      * @var string
      * @wiseId confidentialityStatus
      */
-    public $confStatus;
+    public string $confStatus;
 
     /**
      * INSPIRE identifier - local identifier
@@ -265,7 +263,7 @@ class MonitoringSite
      * @var string
      * @wiseId inspireIdLocalId
      */
-    public $localId;
+    public string $localId;
 
     /**
      * INSPIRE identifier - namespace
@@ -279,7 +277,7 @@ class MonitoringSite
      * @var string
      * @wiseId inspireIdNamespace
      */
-    public $namespace;
+    public string $namespace;
 
     /**
      * INSPIRE identifier - version identifier
@@ -298,7 +296,7 @@ class MonitoringSite
      * @var string
      * @wiseId inspireIdVersionId
      */
-    public $versionId;
+    public string $versionId;
 
     /**
      * Thematic identifier - identifier
@@ -311,7 +309,7 @@ class MonitoringSite
      * @var string
      * @wiseId thematicIdIdentifier
      */
-    public $thematicId;
+    public string $thematicId;
 
     /**
      * Thematic identifier - identifier scheme
@@ -327,7 +325,7 @@ class MonitoringSite
      * @var string
      * @wiseId thematicIdIdentifierScheme
      */
-    public $themaIdSch;
+    public string $themaIdSch;
 
     /**
      * Version lifespan - begin
@@ -337,10 +335,10 @@ class MonitoringSite
      *
      * http://dd.eionet.europa.eu/dataelements/latest/beginLifespanVersion
      *
-     * @var DateTime
+     * @var \DateTime
      * @wiseId beginLifespanVersion
      */
-    public $beginLife;
+    public \DateTime $beginLife;
 
     /**
      * Version lifespan - end
@@ -352,10 +350,10 @@ class MonitoringSite
      *
      * http://dd.eionet.europa.eu/dataelements/latest/endLifespanVersion
      *
-     * @var DateTime
+     * @var \DateTime|null
      * @wiseId endLifespanVersion
      */
-    public $endLife;
+    public ?\DateTime $endLife;
 
     /**
      * Supersedes - identifier
@@ -372,7 +370,7 @@ class MonitoringSite
      * @var string
      * @wiseId supersedesIdentifier
      */
-    public $predecesId;
+    public string $predecesId;
 
     /**
      * Supersedes - identifier scheme
@@ -388,7 +386,7 @@ class MonitoringSite
      * @var string
      * @wiseId supersedesIdentifierScheme
      */
-    public $predeIdSch;
+    public string $predeIdSch;
 
     /**
      * Superseded by - identifier
@@ -405,7 +403,7 @@ class MonitoringSite
      * @var string
      * @wiseId supersededByIdentifier
      */
-    public $successoId;
+    public string $successoId;
 
     /**
      * Superseded by - identifier scheme
@@ -421,7 +419,7 @@ class MonitoringSite
      * @var string
      * @wiseId supersededByIdentifierScheme
      */
-    public $succeIdSch;
+    public string $succeIdSch;
 
     /**
      * WISE evolution type
@@ -448,7 +446,7 @@ class MonitoringSite
      * @var string
      * @wiseId wiseEvolutionType
      */
-    public $wEvolution;
+    public string $wEvolution;
 
     /**
      * Name - english version
@@ -460,7 +458,7 @@ class MonitoringSite
      * @var string
      * @wiseId nameTextInternational
      */
-    public $nameTxtInt;
+    public string $nameTxtInt;
 
     /**
      * Name - national version
@@ -472,7 +470,7 @@ class MonitoringSite
      * @var string
      * @wiseId nameText
      */
-    public $nameText;
+    public string $nameText;
 
     /**
      * Name - language code
@@ -484,7 +482,7 @@ class MonitoringSite
      * @var string
      * @wiseId nameLanguage
      */
-    public $nameTxtLan;
+    public string $nameTxtLan;
 
     /**
      * Link
@@ -496,7 +494,7 @@ class MonitoringSite
      * @var string
      * @wiseId link
      */
-    public $link;
+    public string $link;
 
     /**
      * Integer field containing the value 2010 in the shapefiles pertaining to WFD2010 and the value 2016 in the
@@ -504,7 +502,7 @@ class MonitoringSite
      *
      * @var int
      */
-    public $cYear;
+    public int $cYear;
 
     /**
      * Status code of the thematic identifier in the WISE register (refer to Status
@@ -512,14 +510,14 @@ class MonitoringSite
      *
      * @var string
      */
-    public $statusCode;
+    public string $statusCode;
 
     /**
      * Date of reference for the status code (typically the date when the data is extracted for publication).
      *
-     * @var DateTime
+     * @var \DateTime|null
      */
-    public $statusDate;
+    public ?\DateTime $statusDate;
 
     /**
      * Currently used only for records where cYear = 2010, provides information about the reason why a given identifier
@@ -527,26 +525,26 @@ class MonitoringSite
      *
      * @var string
      */
-    public $remarks;
+    public string $remarks;
 
     /**
      * ISO 3166-1 alpha-2
      *
      * @var string
      */
-    public $country;
+    public string $country;
 
     /**
-     * dditional information about the comparability between 2010 and 2016 objects, or about quality issues detected in
+     * Additional information about the comparability between 2010 and 2016 objects, or about quality issues detected in
      * the data (please refer to the CDR deliveries for a full report on the quality control of WFD2016 deliveries).
      *
      * @var string
      */
-    public $qcCheck;
+    public string $qcCheck;
 
     /**
      * Geographic location of the monitoring site using WGS84.
      * @var LngLat
      */
-    public $coordinates;
+    public LngLat $coordinates;
 }
