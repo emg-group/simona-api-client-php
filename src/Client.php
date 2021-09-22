@@ -5,11 +5,7 @@ namespace EmgSystems\Simona;
 use EmgSystems\Simona\Model\MonitoringSite;
 use EmgSystems\Simona\Model\WaterQualityStatus;
 use Exception;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use JsonMapper;
 
 /**
  * Client of the SIMONA public API
@@ -17,26 +13,31 @@ use Symfony\Component\Serializer\Serializer;
  */
 class Client
 {
-    const PROTOCOL = 'https';
-    const BASE_URL = 'simona.emg.systems';
-
     /** @var resource */
     protected $curl;
 
-    protected Serializer $serializer;
+    /** @var JsonMapper Service used for mapping JSON responses to objects */
+    protected JsonMapper $mapper;
+
+    /** @var string HTTP protocol used for accessing the API endpoints */
+    private string $protocol;
+
+    /** @var string Base URL use for creating absolute endpoint URLs */
+    private string $baseUrl;
 
     /**
      * API client constructor.
+     * @param string|null $protocol
+     * @param string|null $baseUrl
      */
-    public function __construct()
+    public function __construct(?string $protocol = null, ?string $baseUrl = null)
     {
+        $config = json_decode(file_get_contents("config.json"));
+        $this->protocol = $protocol ?? $config->API->protocol;
+        $this->baseUrl = $baseUrl ?? $config->API->baseUrl;
+
         $this->initCurl();
-        $this->serializer = new Serializer(
-            [
-                new ObjectNormalizer(),
-                new ArrayDenormalizer(),
-                new DateTimeNormalizer()],
-            [new JsonEncoder()]);
+        $this->mapper = new JsonMapper();
     }
 
     /**
@@ -58,8 +59,8 @@ class Client
      */
     public function monitoringSites(string $countryCode): array
     {
-        $json = $this->execute('GET', "water-quality/monitoring-site/{$countryCode}");
-        return $this->serializer->deserialize($json, MonitoringSite::class . '[]', 'json');
+        $response = $this->execute('GET', "water-quality/monitoring-site/{$countryCode}");
+        return $this->mapper->mapArray($response, [], MonitoringSite::class);
     }
 
     /**
@@ -71,8 +72,8 @@ class Client
      */
     public function waterQuality(string $thematicId): WaterQualityStatus
     {
-        $json = $this->execute('GET', "water-quality/status/monitoring-site/{$thematicId}");
-        return $this->serializer->deserialize($json, WaterQualityStatus::class, 'json');
+        $response = $this->execute('GET', "water-quality/status/monitoring-site/{$thematicId}");
+        return $this->mapper->map($response, new WaterQualityStatus());
     }
 
     /**
@@ -83,17 +84,17 @@ class Client
      */
     protected function getUrl(string $uri): string
     {
-        return self::PROTOCOL . '://' . self::BASE_URL . '/' . $uri;
+        return "{$this->protocol}://{$this->baseUrl}/{$uri}";
     }
 
     /**
      * Executes an HTTP request and returns the response as an array
      * @param string $httpMethod
      * @param string $uri
-     * @return string
+     * @return mixed
      * @throws Exception
      */
-    protected function execute(string $httpMethod, string $uri): string
+    protected function execute(string $httpMethod, string $uri)
     {
         curl_setopt_array($this->curl, [
             CURLOPT_URL => $this->getUrl($uri),
@@ -101,7 +102,8 @@ class Client
             CURLOPT_CUSTOMREQUEST => strtoupper($httpMethod)
         ]);
         $response = curl_exec($this->curl);
-        if ($errorNumber = curl_errno($this->curl)) {
+        $errorNumber = curl_errno($this->curl);
+        if ($errorNumber) {
             throw new Exception(curl_error($this->curl), $errorNumber);
         }
         $headerSize = curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
@@ -111,7 +113,12 @@ class Client
             throw new Exception('Unprocessable response');
         }
 
-        return $body;
+        $json = json_decode($body);
+        if (null === $json) {
+            throw new Exception('Invalid response returned');
+        }
+
+        return $json;
     }
 
     protected function initCurl()
