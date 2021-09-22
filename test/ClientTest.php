@@ -19,7 +19,7 @@ final class ClientTest extends TestCase
      */
     function setUp(): void
     {
-        $this->client = new Client();
+        $this->client = new Client('http', 'simona-bp.test');
     }
 
     /**
@@ -33,7 +33,7 @@ final class ClientTest extends TestCase
     /**
      * Loading monitoring sites and checking deserialization
      * @throws Exception
-     * /
+     */
     public function testMonitoringSiteLoading(): void
     {
         $monitoringSites = $this->client->monitoringSites('hu');
@@ -44,10 +44,10 @@ final class ClientTest extends TestCase
     /**
      * Loading water quality status information
      * @throws Exception
-     * /
+     */
     public function testWaterQuality(): void
     {
         $waterQuality = $this->client->waterQuality('HU101845839');
         $this->assertEquals(272417, $waterQuality->monitoringSiteId);
-    }*/
+    }
 }
