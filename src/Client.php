@@ -9,6 +9,7 @@ use JsonMapper;
 
 /**
  * Client of the SIMONA public API
+ *
  * @package emg-systems/simona-api-client
  */
 class Client
@@ -27,6 +28,7 @@ class Client
 
     /**
      * API client constructor.
+     *
      * @param string|null $protocol
      * @param string|null $baseUrl
      */
@@ -53,7 +55,8 @@ class Client
     /**
      * Loads surface water body monitoring sites within a country
      *
-     * @param string $countryCode ISO 3166-1 alpha-2 country code
+     * @param string $countryCode   ISO 3166-1 alpha-2 country code
+     *
      * @return MonitoringSite[]
      * @throws Exception
      */
@@ -66,7 +69,8 @@ class Client
     /**
      * Loads water quality status information about a single monitoring site
      *
-     * @param string $thematicId WISE id of the monitoring site
+     * @param string $thematicId   WISE id of the monitoring site
+     *
      * @return WaterQualityStatus
      * @throws Exception
      */
@@ -80,6 +84,7 @@ class Client
      * Translates relative URI to absolute URL
      *
      * @param $uri string Endpoint URI
+     *
      * @return string Absolute URL
      */
     protected function getUrl(string $uri): string
@@ -89,16 +94,18 @@ class Client
 
     /**
      * Executes an HTTP request and returns the response as an array
+     *
      * @param string $httpMethod
      * @param string $uri
+     *
      * @return mixed
      * @throws Exception
      */
     protected function execute(string $httpMethod, string $uri)
     {
         curl_setopt_array($this->curl, [
-            CURLOPT_URL => $this->getUrl($uri),
-            CURLOPT_POST => true,
+            CURLOPT_URL           => $this->getUrl($uri),
+            CURLOPT_POST          => true,
             CURLOPT_CUSTOMREQUEST => strtoupper($httpMethod)
         ]);
         $response = curl_exec($this->curl);
@@ -106,9 +113,8 @@ class Client
         if ($errorNumber) {
             throw new Exception(curl_error($this->curl), $errorNumber);
         }
-        $headerSize = curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
-        $body = substr($response, $headerSize);
 
+        $body = $this->getResponseBody($response);
         if (!$body) {
             throw new Exception('Unprocessable response');
         }
@@ -125,21 +131,30 @@ class Client
     {
         $this->curl = curl_init();
         curl_setopt_array($this->curl, [
-            CURLOPT_HTTPHEADER => [
+            CURLOPT_HTTPHEADER      => [
                 'Accept: application/json'
             ],
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_AUTOREFERER => true,
-            CURLOPT_FOLLOWLOCATION => false,
-            CURLOPT_MAXREDIRS => 20,
-            CURLOPT_HEADER => true,
-            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_AUTOREFERER     => true,
+            CURLOPT_FOLLOWLOCATION  => false,
+            CURLOPT_MAXREDIRS       => 20,
+            CURLOPT_HEADER          => true,
+            CURLOPT_PROTOCOLS       => CURLPROTO_HTTP | CURLPROTO_HTTPS,
             CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            CURLOPT_USERAGENT => 'SIMONA API Client (Curl)',
-            CURLOPT_CONNECTTIMEOUT => 30,
-            CURLOPT_TIMEOUT => 30
+            CURLOPT_USERAGENT       => 'SIMONA API Client (Curl)',
+            CURLOPT_CONNECTTIMEOUT  => 30,
+            CURLOPT_TIMEOUT         => 30
         ]);
     }
 
-
+    /**
+     * @param string $response
+     *
+     * @return string|null
+     */
+    protected function getResponseBody(string $response): ?string
+    {
+        $headerSize = curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
+        return substr($response, $headerSize) ?: null;
+    }
 }
