@@ -1,0 +1,6 @@
+{
+  "API": {
+	"protocol": "https",
+	"baseUrl": "simona.emg.systems"
+  }
+}
